@@ -4,6 +4,7 @@
  */
 package jfxwithjbox2d;
 
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -68,6 +69,8 @@ public class JFXwithJBox2d extends Application {
 	
 	static Sprite playerSprite;
 
+	public static ImageView titleScreen;
+	
 	public static void main(String[] args) {
 		Application.launch(args);
 	}
@@ -182,9 +185,27 @@ public class JFXwithJBox2d extends Application {
 			public void handle(ActionEvent event) {
 				timeline.playFromStart(); 
 				btn.setVisible(false);
+				root.getChildren().remove(titleScreen);
 			}
 		});
+		
+		titleScreen = new ImageView();
+	        // simple displays ImageView the image as is
+	    	try {
+	    		Image image = new Image(new FileInputStream("startscreen.png"));
+	            titleScreen.setImage(image);
+	            
+	    	} catch (FileNotFoundException e) {
+	    		// TODO Auto-generated catch block
+	    		e.printStackTrace();
+	    	}
 
+	    	titleScreen.setFitWidth(800);
+	    	titleScreen.setPreserveRatio(true);
+	    	titleScreen.setY(60);
+	    	titleScreen.setX(0);
+	    root.getChildren().add(titleScreen);
+	    
 		//Add button to the root group
 		root.getChildren().add(btn);
 
