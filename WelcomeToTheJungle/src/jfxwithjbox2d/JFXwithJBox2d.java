@@ -212,12 +212,12 @@ public class JFXwithJBox2d extends Application {
 								//Utils.player.getBody().applyLinearImpulse(new Vec2(-.5f,0), Utils.player.getBody().getPosition());//(Utils.player.getBody().getLinearVelocity().add(new Vec2(-1f,0)));
 								if(Utils.player.getBody().getLinearVelocity().x>-3){
 									//Utils.player.getBody().applyForce(new Vec2(-5f,0f), Utils.player.getBody().getPosition());
-									Utils.player.getBody().setLinearVelocity(new Vec2(Utils.player.getBody().getLinearVelocity().x-1f,Utils.player.getBody().getLinearVelocity().y));
+									Utils.player.getBody().setLinearVelocity(new Vec2(Utils.player.getBody().getLinearVelocity().x-2f,Utils.player.getBody().getLinearVelocity().y));
 								}
 							}else if(me.getCode() == KeyCode.D){
 								if(Utils.player.getBody().getLinearVelocity().x <3){
 									//Utils.player.getBody().applyForce(new Vec2(5f,0f), Utils.player.getBody().getPosition());
-									Utils.player.getBody().setLinearVelocity(new Vec2(Utils.player.getBody().getLinearVelocity().x+1f,Utils.player.getBody().getLinearVelocity().y));
+									Utils.player.getBody().setLinearVelocity(new Vec2(Utils.player.getBody().getLinearVelocity().x+2f,Utils.player.getBody().getLinearVelocity().y));
 								}
 							}else if((me.getCode() == KeyCode.SPACE || me.getCode()== KeyCode.W) && (float)(time-Utils.lastLandscapeTime)/1000000000 < 0.1f){
 								Utils.player.getBody().setLinearVelocity(Utils.player.getBody().getLinearVelocity().add(new Vec2(0,5f)));//.applyForce(new Vec2(0,100), Utils.player.getBody().getPosition());
@@ -295,11 +295,11 @@ public class JFXwithJBox2d extends Application {
 		}
 		
 		if(flamethrowing) {
-			float dx = Utils.toPosX(dragX)- Utils.player.getBody().getPosition().x;
-			float dy = Utils.toPosY(dragY) - Utils.player.getBody().getPosition().y;
+			float dx = Utils.toPosX(dragX)+Utils.cameraX- Utils.player.getBody().getPosition().x;
+			float dy = Utils.toPosY(dragY)+Utils.cameraY - Utils.player.getBody().getPosition().y;
 			Vec2 impulse = new Vec2(dx, dy);
 			impulse.normalize();
-			//Vec2f impulse.mul(.5f);
+			Vec2 spawnOffset = impulse.mul(.4f);
 			impulse.mulLocal(.1f);
 
 			//hurdle.getBody().getPosition();
@@ -307,8 +307,18 @@ public class JFXwithJBox2d extends Application {
 			//Draw ball on this location. Set balls body type to static.
 			//Ball hurdle = new Ball(Utils.toPosX(dragX), Utils.toPosY(dragY),.02f,BodyType.DYNAMIC,Color.BLUE);
 			//TreeSegment hurdle = new TreeSegment(Utils.toPosX(dragX), Utils.toPosY(dragY),.2f,.4f , 1f);
-			Flame hurdle = new Flame(Utils.player.getBody().getPosition().x, Utils.player.getBody().getPosition().y, .1f);
-			hurdle.getBody().applyLinearImpulse(impulse, hurdle.getBody().getPosition());
+			//Flame hurdle = new Flame(Utils.player.getBody().getPosition().x, Utils.player.getBody().getPosition().y, .1f);
+			//hurdle.getBody().applyLinearImpulse(impulse, hurdle.getBody().getPosition());
+			
+			Vec2 adjustedSpawnPosition= Utils.player.getBody().getPosition().add(spawnOffset);
+			Flame hurdle = new Flame(adjustedSpawnPosition.x,adjustedSpawnPosition.y, .1f);
+			hurdle.getBody().applyLinearImpulse(impulse, adjustedSpawnPosition);
+				
+			
+				
+				
+				
+		
 		}
 
 	}

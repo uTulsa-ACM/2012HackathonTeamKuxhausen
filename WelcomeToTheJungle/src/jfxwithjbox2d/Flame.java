@@ -3,6 +3,7 @@ package jfxwithjbox2d;
 import javafx.scene.paint.Color;
 import jfxwithjbox2d.SpriteClass.Sprite;
 
+import org.jbox2d.collision.shapes.MassData;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.BodyType;
 
@@ -25,6 +26,10 @@ public class Flame extends Ball {
 		this.setNode(sprite.imageView);
 		JFXwithJBox2d.root.getChildren().add(this.getNode());
 		sprite.setImageStrip("flame", true, true);
+		//MassData md = new MassData();
+		//t//his.getBody().getMassData(md);
+		//md.mass = md.mass*;
+		//this.getBody().setMassData(md);
 		
 	}
 
