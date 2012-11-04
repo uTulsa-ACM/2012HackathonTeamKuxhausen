@@ -56,7 +56,6 @@ public class JFXwithJBox2d extends Application {
     final static Set<Updatee> updatees = new HashSet<Updatee>();
 	static Group root;
 	
-	
 	long time = System.nanoTime();
 
 	public static void main(String[] args) {
@@ -78,6 +77,8 @@ public class JFXwithJBox2d extends Application {
 
 		Random r = new Random(System.currentTimeMillis());
 
+		CollisionDetector cd = new CollisionDetector();
+		Utils.world.setContactListener(cd);
 		
 		//Add player
 		Utils.player = new Player(4,3);
@@ -95,9 +96,7 @@ public class JFXwithJBox2d extends Application {
 		Utils.cameraX = Utils.player.getBody().getPosition().x-4;
 		Utils.cameraY = Utils.player.getBody().getPosition().y-3;
 		
-		
-
-		//Add terain 
+		//Add terrain 
 		Level level = new Level();
 		ArrayList<PhysicsObject> levelObjects= level.levelOne();
 		for(PhysicsObject thing : levelObjects )

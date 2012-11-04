@@ -60,7 +60,7 @@ public class SpriteClass {
 	
 	public class Sprite implements Updatee {
 	    public final ImageView imageView; // important that this is final, it is our Node used for rendering
-	    private float progress; // progress through our current strip
+	    public float progress; // progress through our current strip
 	    private boolean running; // are we animating?
 	    private boolean looping; // do we loop?
 	    private ImageStrip imageStrip;

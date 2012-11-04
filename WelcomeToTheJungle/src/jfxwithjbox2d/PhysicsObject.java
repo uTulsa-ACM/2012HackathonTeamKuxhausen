@@ -1,5 +1,8 @@
 package jfxwithjbox2d;
 
+import java.util.Map;
+import java.util.HashMap;
+
 import javafx.scene.Node;
 
 import org.jbox2d.dynamics.Body;
@@ -9,6 +12,8 @@ public abstract class PhysicsObject {
 
 	//JavaFX UI for ball
     private Node node;
+    
+    public static final Map<Body,PhysicsObject> objectMap = new HashMap<Body,PhysicsObject>();
     
     /*
      * There are three types bodies in JBox2D Static, Kinematic and dynamic 
@@ -25,14 +30,26 @@ public abstract class PhysicsObject {
 	}
     
     public void setBody(Body body) {
+    	if(body!=null) {
+    		if(objectMap.get(body)==this) objectMap.remove(node);
+    	}
     	this.body = body;
-    	if(this.node!=null) this.node.setUserData(body);
+    	if(this.node!=null) {
+    		this.node.setUserData(body);
+    	}
+    	if(body!=null) {
+    		objectMap.put(body,this);
+    	}
     }
     
     public void setNode(Node node) {
-    	if(this.node!=null) this.node.setUserData(null);
+    	if(this.node!=null) {
+    		this.node.setUserData(null);
+    	}
     	this.node = node;
-    	if(this.node!=null) this.node.setUserData(this.body);
+    	if(this.node!=null) {
+    		this.node.setUserData(this.body);
+    	}
     }
 
 	public Node getNode() {
