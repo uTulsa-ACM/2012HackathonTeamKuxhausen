@@ -4,6 +4,7 @@
  */
 package jfxwithjbox2d;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -58,7 +59,7 @@ public class JFXwithJBox2d extends Application {
     final static Set<Updatee> updatees = new HashSet<Updatee>();
 	static Group root;
 	
-	FlameAudioTest flameAudio = new FlameAudioTest();
+	static FlameAudioTest flameAudio = new FlameAudioTest();
 	protected boolean flamethrowing = false;
 	
 	long time = System.nanoTime();
@@ -90,6 +91,17 @@ public class JFXwithJBox2d extends Application {
 
 		CollisionDetector cd = new CollisionDetector();
 		Utils.world.setContactListener(cd);
+		
+//		Ball asdf = new Ball(0, 0, 0, BodyType.STATIC, Color.ALICEBLUE);
+//		SpriteClass bgclass = new SpriteClass();
+//		bgclass.putImageStrip("bg", "background.png", 1, 1.f);
+//		Sprite bgsprite = bgclass.new Sprite(661,256);
+//		root.getChildren().add(bgsprite.imageView);
+//		updatees.add(bgsprite);
+//		bgsprite.setImageStrip("bg", false, false);
+////		bgsprite.imageView.setTranslateY(200);
+//		asdf.setNode(bgsprite.imageView);
+		
 		
 		//Add player
 		Utils.player = new Player(4,3);
@@ -196,8 +208,10 @@ public class JFXwithJBox2d extends Application {
 		EventHandler<MouseEvent> onMouseDown = new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent arg0) {
-				flameAudio.activate();
-				flamethrowing = true;
+				if(!Utils.player.dead) {
+					flameAudio.activate();
+					flamethrowing = true;
+				}
 			}
 		};
 		
@@ -354,5 +368,11 @@ public class JFXwithJBox2d extends Application {
 		
 		}
 
+	}
+	
+	@Override
+	public void stop() throws Exception {
+		super.stop();
+		System.exit(0);
 	}
 }

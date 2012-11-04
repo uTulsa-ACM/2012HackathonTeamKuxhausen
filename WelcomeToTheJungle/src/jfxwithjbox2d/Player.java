@@ -84,6 +84,7 @@ public class Player extends PhysicsObject {
 		if(health<=0){
 			if(!dead) JFXwithJBox2d.playerSprite.setImageStrip("death", true, false);
 			dead = true;
+			JFXwithJBox2d.flameAudio.deactivate();
 			// return true;
 		}
 		// TODO Auto-generated method stub

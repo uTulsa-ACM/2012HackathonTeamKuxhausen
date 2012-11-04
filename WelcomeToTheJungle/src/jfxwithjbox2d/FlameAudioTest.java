@@ -26,7 +26,7 @@ public class FlameAudioTest {
 	
 	public void activate() {
 		if(active) return;
-		audioPlayerSimple.play("death1.wav",-10.f);
+//		audioPlayerSimple.play("death1.wav",-10.f);
 		audioPlayerSimple.play("flame2.wav",0.f);
 		active = true;
 	}

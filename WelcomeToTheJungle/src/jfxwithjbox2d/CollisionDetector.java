@@ -6,6 +6,8 @@ import org.jbox2d.collision.Manifold;
 import org.jbox2d.dynamics.contacts.Contact;
 
 public class CollisionDetector implements ContactListener {
+	long lastGroan = System.nanoTime();
+	
 	@Override
 	public void beginContact(Contact contact) {
 //		System.out.println(PhysicsObject.objectMap);
@@ -38,8 +40,15 @@ public class CollisionDetector implements ContactListener {
 				po2 == Utils.player && po1 instanceof GorillaEnemy) {
 			Player player = Utils.player;
 			GorillaEnemy gorilla = (GorillaEnemy)(po1 instanceof GorillaEnemy? po1 : po2);
-			if(!player.dead && !gorilla.dead) JFXwithJBox2d.playerSprite.setImageStrip("death", false, false);
-			if(!gorilla.dead) player.health-=5;
+			if(!player.dead && !gorilla.dead) {
+				JFXwithJBox2d.playerSprite.setImageStrip("death", false, false);
+				long time = System.nanoTime();
+				if((float)(time-lastGroan)/1000000000>0.5f) {
+					lastGroan = time;
+					new AudioPlayerSimple().play("death1.wav",-10.f);
+				}
+				player.health-=5;
+			}
 		}
 
 		if(po1 == Utils.player && po2 instanceof Box || po2 == Utils.player && po1 instanceof Box) {
