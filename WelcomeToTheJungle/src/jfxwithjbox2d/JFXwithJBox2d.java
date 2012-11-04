@@ -204,9 +204,30 @@ public class JFXwithJBox2d extends Application {
 		//ON KEY EVENT
 				//Draw hurdles on mouse event.
 				EventHandler<KeyEvent> keyboardEvent = new EventHandler<KeyEvent>(){
-					public void handle(KeyEvent me) {
-						//Get mouse's x and y coordinates on the scene
+					
+						public void handle(KeyEvent me) {
+							//Get mouse's x and y coordinates on the scene
 
+							if(me.getCode() == KeyCode.A){
+								//Utils.player.getBody().applyLinearImpulse(new Vec2(-.5f,0), Utils.player.getBody().getPosition());//(Utils.player.getBody().getLinearVelocity().add(new Vec2(-1f,0)));
+								if(Utils.player.getBody().getLinearVelocity().x>-3){
+									//Utils.player.getBody().applyForce(new Vec2(-5f,0f), Utils.player.getBody().getPosition());
+									Utils.player.getBody().setLinearVelocity(new Vec2(Utils.player.getBody().getLinearVelocity().x-1f,Utils.player.getBody().getLinearVelocity().y));
+								}
+							}else if(me.getCode() == KeyCode.D){
+								if(Utils.player.getBody().getLinearVelocity().x <3){
+									//Utils.player.getBody().applyForce(new Vec2(5f,0f), Utils.player.getBody().getPosition());
+									Utils.player.getBody().setLinearVelocity(new Vec2(Utils.player.getBody().getLinearVelocity().x+1f,Utils.player.getBody().getLinearVelocity().y));
+								}
+							}else if((me.getCode() == KeyCode.SPACE || me.getCode()== KeyCode.W) && (float)(time-Utils.lastLandscapeTime)/1000000000 < 0.1f){
+								Utils.player.getBody().setLinearVelocity(Utils.player.getBody().getLinearVelocity().add(new Vec2(0,5f)));//.applyForce(new Vec2(0,100), Utils.player.getBody().getPosition());
+								Utils.lastLandscapeTime -= 1000000000;
+							}
+						}
+
+						
+						//Get mouse's x and y coordinates on the scene						
+						/*
 						if(me.getCode() == KeyCode.A){
 							Utils.player.getBody().applyLinearImpulse(new Vec2(-.5f,0), Utils.player.getBody().getPosition());//(Utils.player.getBody().getLinearVelocity().add(new Vec2(-1f,0)));
 						}else if(me.getCode() == KeyCode.D){
@@ -214,9 +235,9 @@ public class JFXwithJBox2d extends Application {
 						}else if((me.getCode() == KeyCode.SPACE || me.getCode()== KeyCode.W) && (float)(time-Utils.lastLandscapeTime)/1000000000 < 0.1f){
 							Utils.player.getBody().setLinearVelocity(Utils.player.getBody().getLinearVelocity().add(new Vec2(0,5f)));//.applyForce(new Vec2(0,100), Utils.player.getBody().getPosition());
 							Utils.lastLandscapeTime -= 1000000000;
-						}
+						}*/
 
-					}
+					
 
 				};
 
