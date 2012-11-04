@@ -89,10 +89,12 @@ public class JFXwithJBox2d extends Application {
 		Utils.player.setNode(sprite.imageView);
 		root.getChildren().add(Utils.player.getNode());
 		sprite.setImageStrip("horse", true, true);
+		Utils.player.getBody().setFixedRotation(true);
 		
 		//center camera on player
 		Utils.cameraX = Utils.player.getBody().getPosition().x-4;
 		Utils.cameraY = Utils.player.getBody().getPosition().y-3;
+		
 		
 
 		//Add terain 
@@ -177,7 +179,10 @@ public class JFXwithJBox2d extends Application {
 				float dy = Utils.toPosY(dragY) - Utils.player.getBody().getPosition().y;
 				Vec2 impulse = new Vec2(dx, dy);
 				impulse.normalize();
+				//Vec2f impulse.mul(.5f);
 				impulse.mulLocal(.1f);
+				
+				//hurdle.getBody().getPosition();
 				
 				//Draw ball on this location. Set balls body type to static.
 				//Ball hurdle = new Ball(Utils.toPosX(dragX), Utils.toPosY(dragY),.02f,BodyType.DYNAMIC,Color.BLUE);

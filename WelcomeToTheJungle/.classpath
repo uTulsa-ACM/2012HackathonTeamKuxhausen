@@ -11,5 +11,9 @@
 	<classpathentry kind="lib" path="slf4j-1.7.2/slf4j-api-1.7.2.jar"/>
 	<classpathentry kind="lib" path="slf4j-1.7.2/slf4j-log4j12-1.7.2.jar"/>
 	<classpathentry kind="lib" path="C:/Program Files/Java/jdk1.7.0_09/jre/lib/jfxrt.jar"/>
+	<classpathentry kind="lib" path="VorbisSPI1.0.3/vorbisspi1.0.3.jar"/>
+	<classpathentry kind="lib" path="VorbisSPI1.0.3/lib/jogg-0.0.7.jar"/>
+	<classpathentry kind="lib" path="VorbisSPI1.0.3/lib/jorbis-0.0.15.jar"/>
+	<classpathentry kind="lib" path="VorbisSPI1.0.3/lib/tritonus_share.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -117,8 +117,18 @@ public class Utils {
     }
     
     public static void updateCamera() {
-		cameraX += .00001*Math.pow(((player.getBody().getPosition().x-cameraX)-4),3);
-		cameraY += .00001*Math.pow(((player.getBody().getPosition().y-cameraY)-3),3);
+		/*cameraX += .00001*Math.pow(((player.getBody().getPosition().x-cameraX)-4),3);
+		cameraY += .00001*Math.pow(((player.getBody().getPosition().y-cameraY)-3),3);*/
+    	 
+    	if(Math.abs(player.getBody().getPosition().x - (cameraX+4)) > 2 ){
+    		cameraX += 0.03 * ((player.getBody().getPosition().x - (cameraX+4))/Math.abs(player.getBody().getPosition().x - (cameraX+4)));
+    		
+    	}
+    	if(Math.abs(player.getBody().getPosition().y - (cameraY+3)) > 2 ){
+    		cameraY += 0.03 * ((player.getBody().getPosition().y - (cameraY+3))/Math.abs(player.getBody().getPosition().y - (cameraY+3)));
+    		
+    	}
+    		
 	}
  
 }
