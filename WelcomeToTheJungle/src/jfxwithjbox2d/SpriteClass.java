@@ -84,10 +84,10 @@ public class SpriteClass {
 	    	if(running && imageStrip != null) {
 	    		progress += timePassed;
 	    		if(progress > imageStrip.duration && !looping) {
-	    			progress = 0.f;
+	    			progress = imageStrip.duration;
 	    			running = false;
 	    		}
-	    		progress %= imageStrip.duration;
+	    		if(looping) progress %= imageStrip.duration;
 	    		double normalizedProgress = progress / imageStrip.duration;
 	    		final int index = Math.min((int) Math.floor(normalizedProgress * imageStrip.count), imageStrip.count - 1);
 	    		if (index != previousIndex) {

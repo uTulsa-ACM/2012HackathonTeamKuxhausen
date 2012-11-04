@@ -91,12 +91,16 @@ public class JFXwithJBox2d extends Application {
 		Utils.player = new Player(4,3);
 		physicsObjects.add(Utils.player);
 		SpriteClass spriteClass = new SpriteClass();
-		spriteClass.putImageStrip("horse", "./runcombined.png", 4, 4, 0, 0, 74, 65, 0.5f);
+		spriteClass.putImageStrip("run", "./runcombined.png", 4, 0.5f);
+		spriteClass.putImageStrip("standing", "./standing.png", 1, 1.f);
+		spriteClass.putImageStrip("death", "./deathcombined.png", 5, 1.f);
 		final Sprite sprite = spriteClass.new Sprite(80, 80);
+		Utils.player.getBody().setTransform(new Vec2(4,3), -(float)Math.PI/16);
+		
 		updatees.add(sprite);
 		Utils.player.setNode(sprite.imageView);
 		root.getChildren().add(Utils.player.getNode());
-		sprite.setImageStrip("horse", true, true);
+		sprite.setImageStrip("run", true, true);
 		Utils.player.getBody().setFixedRotation(true);
 		
 		//center camera on player
