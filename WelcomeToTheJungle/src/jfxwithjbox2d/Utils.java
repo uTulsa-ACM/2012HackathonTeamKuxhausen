@@ -27,8 +27,9 @@ public class Utils {
     //Screen width and height
     public static final int WIDTH = 800;
     public static final int HEIGHT = 600;
+    public static final float physicsToGraphicsFactor = 100f; //on screen world is 6 by 8
     
-    //Camera offset in world space
+    //Camera offset in physics space
     public static float cameraX = 0;
     public static float cameraY =0;
     private static final float cameraVelocity = 0;
@@ -82,42 +83,42 @@ public class Utils {
    
     //Convert a JBox2D x coordinate to a JavaFX pixel x coordinate
     public static float toPixelPosX(float posX) {
-        float x = WIDTH*(posX-cameraX) / 100.0f;
+        float x = physicsToGraphicsFactor*(posX-cameraX);
         return x;
     }
 
     //Convert a JavaFX pixel x coordinate to a JBox2D x coordinate
     public static float toPosX(float posX) {
-        float x =  cameraX + (posX*100.0f*1.0f)/WIDTH;
+        float x =  (cameraX + posX)/physicsToGraphicsFactor;
         return x;
     }
     
     //Convert a JBox2D y coordinate to a JavaFX pixel y coordinate
     public static float toPixelPosY(float posY) {
-        float y = HEIGHT - (1.0f*HEIGHT) * (posY-cameraY) / 100.0f;
+        float y = HEIGHT - physicsToGraphicsFactor * (posY-cameraY) ;
         return y;
     }
     
     //Convert a JavaFX pixel y coordinate to a JBox2D y coordinate
     public static float toPosY(float posY) {
-        float y = cameraY + 100.0f - ((posY * 100*1.0f) /HEIGHT) ;
+        float y = (HEIGHT - posY)/physicsToGraphicsFactor + cameraY;
         return y;
     }
     
     //Convert a JBox2D width to pixel width
     public static float toPixelWidth(float width) {
-        return WIDTH*width / 100.0f;
+        return physicsToGraphicsFactor*width;
     }
     
     //Convert a JBox2D height to pixel height
     public static float toPixelHeight(float height) {
-        return HEIGHT*height/100.0f;
+        return physicsToGraphicsFactor*height;
         
     }
     
     public static void updateCamera() {
-		cameraX += .00001*Math.pow(((player.getBody().getPosition().x-cameraX)-50),3);
-		cameraY += .00001*Math.pow(((player.getBody().getPosition().y-cameraY)-50),3);
+		cameraX += .00001*Math.pow(((player.getBody().getPosition().x-cameraX)-4),3);
+		cameraY += .00001*Math.pow(((player.getBody().getPosition().y-cameraY)-3),3);
 	}
  
 }

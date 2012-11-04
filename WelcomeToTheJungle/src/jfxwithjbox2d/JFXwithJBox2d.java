@@ -4,6 +4,7 @@
  */
 package jfxwithjbox2d;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
@@ -74,30 +75,33 @@ public class JFXwithJBox2d extends Application {
 
 		
 		//Add player
-		Utils.player = new Player(r.nextInt(90)+5,r.nextInt(200)+100);//Utils.toPosX(20), Utils.toPixelPosY(20));
+		Utils.player = new Player(4,3);
 		physicsObjects.add(Utils.player);
 		root.getChildren().add(Utils.player.getNode());
 		//center camera on player
-		Utils.cameraX = Utils.player.getBody().getPosition().x-50;
-		Utils.cameraY = Utils.player.getBody().getPosition().y-50;
+		Utils.cameraX = Utils.player.getBody().getPosition().x-4;
+		Utils.cameraY = Utils.player.getBody().getPosition().y-3;
 
+		//Add terain 
+		Level level = new Level();
+		ArrayList<PhysicsObject> levelObjects= level.levelOne();
+		for(PhysicsObject thing : levelObjects )
+		{
+			physicsObjects.add(thing);
+			root.getChildren().add(thing.getNode());
+		}
 		
 		/**
 		 * Generate balls and position them on random locations.  
-		 * Random locations between 5 to 95 on x axis and between 100 to 500 on y axis 
 		 */
 		for(int i=0;i<Utils.NO_OF_BALLS;i++) {
-			ball[i]=new Box(r.nextInt(90)+5,r.nextInt(400)+100);
-			//ball[i]=new Ball(r.nextInt(90)+5,r.nextInt(400)+100);
+			ball[i]=new Box(r.nextFloat()*8,r.nextFloat()*6+2, .1f, .05f, 0f, BodyType.DYNAMIC,Color.RED);
+			//ball[i]=new Ball(r.nextFloat()*8,r.nextFloat()*6+2, .05f, BodyType.DYNAMIC,Color.RED)
 			physicsObjects.add(ball[i]);
 		}
 
 		//Add ground to the application, this is where balls will land
-		Utils.addGround(100, 10);
-
-		//Add left and right walls so balls will not move outside the viewing area.
-		Utils.addWall(0,100,1,100); //Left wall
-		Utils.addWall(99,100,1,100); //Right wall
+		//Utils.addGround(20, 1);
 
 
 		final Timeline timeline = new Timeline();
@@ -135,7 +139,7 @@ public class JFXwithJBox2d extends Application {
 		//Create button to start simulation.
 		final Button btn = new Button();
 		btn.setLayoutX((Utils.WIDTH/2));
-		btn.setLayoutY((Utils.HEIGHT-30));
+		btn.setLayoutY((Utils.HEIGHT/3));
 		btn.setText("Start");
 		btn.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
@@ -161,7 +165,8 @@ public class JFXwithJBox2d extends Application {
 				float dragY = (float)me.getSceneY();
 
 				//Draw ball on this location. Set balls body type to static.
-				Ball hurdle = new Ball(Utils.toPosX(dragX), Utils.toPosY(dragY),2,BodyType.STATIC,Color.BLUE);
+				//Ball hurdle = new Ball(Utils.toPosX(dragX), Utils.toPosY(dragY),.02f,BodyType.DYNAMIC,Color.BLUE);
+				Box hurdle = new Box(Utils.toPosX(dragX), Utils.toPosY(dragY),.2f,.4f , 1f,BodyType.DYNAMIC,Color.BLUE);
 				//Add ball to the root group
 				physicsObjects.add(hurdle);
 				root.getChildren().add(hurdle.getNode());
@@ -175,11 +180,11 @@ public class JFXwithJBox2d extends Application {
 						//Get mouse's x and y coordinates on the scene
 
 						if(me.getCode() == KeyCode.A){
-							Utils.player.getBody().setLinearVelocity(new Vec2(-10,0));
+							Utils.player.getBody().setLinearVelocity(new Vec2(-1f,0));
 						}else if(me.getCode() == KeyCode.D){
-							Utils.player.getBody().setLinearVelocity(new Vec2(10,0));//.applyForce(new Vec2(1000,0), Utils.player.getBody().getPosition());
+							Utils.player.getBody().setLinearVelocity(new Vec2(1f,0));//.applyForce(new Vec2(1000,0), Utils.player.getBody().getPosition());
 						}else if(me.getCode() == KeyCode.SPACE || me.getCode()== KeyCode.W){
-							Utils.player.getBody().setLinearVelocity(new Vec2(0,10));//.applyForce(new Vec2(0,100), Utils.player.getBody().getPosition());
+							Utils.player.getBody().setLinearVelocity(new Vec2(0,3f));//.applyForce(new Vec2(0,100), Utils.player.getBody().getPosition());
 						}
 
 					}
