@@ -20,6 +20,8 @@ public class Player extends PhysicsObject {
     private LinearGradient gradient;
     
     private BodyType bodyType;
+
+	public int health = 100;
 	
 	public Player(float posX, float posY) {
 		super(null, null);
@@ -75,8 +77,15 @@ public class Player extends PhysicsObject {
         setNode(ball);
     }
 
+    boolean dead = false;
+    
 	@Override
 	public boolean act() {
+		if(health<=0){
+			if(!dead) JFXwithJBox2d.playerSprite.setImageStrip("death", true, false);
+			dead = true;
+			// return true;
+		}
 		// TODO Auto-generated method stub
 		return false;
 	}

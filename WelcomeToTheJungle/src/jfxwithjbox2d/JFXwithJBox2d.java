@@ -65,7 +65,7 @@ public class JFXwithJBox2d extends Application {
 	protected float dragX;
 	protected float dragY;
 	
-	Sprite playerSprite;
+	static Sprite playerSprite;
 
 	public static void main(String[] args) {
 		Application.launch(args);
@@ -220,22 +220,28 @@ public class JFXwithJBox2d extends Application {
 								//Utils.player.getBody().applyLinearImpulse(new Vec2(-.5f,0), Utils.player.getBody().getPosition());//(Utils.player.getBody().getLinearVelocity().add(new Vec2(-1f,0)));
 								if(Utils.player.getBody().getLinearVelocity().x>-3){
 									//Utils.player.getBody().applyForce(new Vec2(-5f,0f), Utils.player.getBody().getPosition());
-									Utils.player.getBody().setLinearVelocity(new Vec2(Utils.player.getBody().getLinearVelocity().x-2f,Utils.player.getBody().getLinearVelocity().y));
-									sprite.setImageStrip("run", true, true);
-									playerFacingRight = false;
+									if(!Utils.player.dead) {
+										Utils.player.getBody().setLinearVelocity(new Vec2(Utils.player.getBody().getLinearVelocity().x-2f,Utils.player.getBody().getLinearVelocity().y));
+										sprite.setImageStrip("run", true, true);
+										playerFacingRight = false;
+									}
 //									sprite.imageView.setScaleX(-1.f);
 								}
 							}else if(me.getCode() == KeyCode.D){
 								if(Utils.player.getBody().getLinearVelocity().x <3){
 									//Utils.player.getBody().applyForce(new Vec2(5f,0f), Utils.player.getBody().getPosition());
-									Utils.player.getBody().setLinearVelocity(new Vec2(Utils.player.getBody().getLinearVelocity().x+2f,Utils.player.getBody().getLinearVelocity().y));
-									sprite.setImageStrip("run", true, true);
-									playerFacingRight = true;
+									if(!Utils.player.dead) {
+										Utils.player.getBody().setLinearVelocity(new Vec2(Utils.player.getBody().getLinearVelocity().x+2f,Utils.player.getBody().getLinearVelocity().y));
+										sprite.setImageStrip("run", true, true);
+										playerFacingRight = true;
+									}
 //									sprite.imageView.setScaleX(1.f);
 								}
 							}else if((me.getCode() == KeyCode.SPACE || me.getCode()== KeyCode.W) && ((float)(time-Utils.lastLandscapeTime)/1000000000 < 0.1f)||Math.abs(Utils.player.getBody().getLinearVelocity().y)<0.01f) {
-								Utils.player.getBody().setLinearVelocity(Utils.player.getBody().getLinearVelocity().add(new Vec2(0,5f)));//.applyForce(new Vec2(0,100), Utils.player.getBody().getPosition());
-								Utils.lastLandscapeTime -= 1000000000;
+								if(!Utils.player.dead) {
+									Utils.player.getBody().setLinearVelocity(Utils.player.getBody().getLinearVelocity().add(new Vec2(0,5f)));//.applyForce(new Vec2(0,100), Utils.player.getBody().getPosition());
+									Utils.lastLandscapeTime -= 1000000000;
+								}
 							}
 						}
 
@@ -290,7 +296,7 @@ public class JFXwithJBox2d extends Application {
 		}
 		
 		if(Utils.player.getBody().getLinearVelocity().lengthSquared() < 0.1f) {
-			playerSprite.setImageStrip("standing", false, false);
+			if(!Utils.player.dead) playerSprite.setImageStrip("standing", false, false);
 		}
 		
 		//Create time step. Set Iteration count 8 for velocity and 3 for positions
@@ -321,7 +327,7 @@ public class JFXwithJBox2d extends Application {
 			physicsObject.getNode().setLayoutY(ypos);
 		}
 		
-		if(flamethrowing) {
+		if(flamethrowing && !Utils.player.dead) {
 			float dx = Utils.toPosX(dragX)+Utils.cameraX- Utils.player.getBody().getPosition().x;
 			float dy = Utils.toPosY(dragY)+Utils.cameraY - Utils.player.getBody().getPosition().y;
 			Vec2 impulse = new Vec2(dx, dy);

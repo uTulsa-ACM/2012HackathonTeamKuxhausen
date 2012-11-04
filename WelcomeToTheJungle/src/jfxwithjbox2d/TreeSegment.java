@@ -40,6 +40,7 @@ public class TreeSegment extends Box {
 			health--;
 		}
 		if(health<=0){
+			new AudioPlayerSimple().play("explode1.wav");
 			return true;
 		}
 		return false;

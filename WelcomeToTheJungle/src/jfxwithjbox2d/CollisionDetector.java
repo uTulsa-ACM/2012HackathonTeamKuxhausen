@@ -26,6 +26,22 @@ public class CollisionDetector implements ContactListener {
 			segment.health-=50;
 		}
 		
+		if(po1 instanceof Flame && po2 instanceof GorillaEnemy ||
+				po2 instanceof Flame && po1 instanceof GorillaEnemy) {
+			Flame flame = (Flame)(po1 instanceof Flame? po1 : po2);
+			GorillaEnemy gorilla = (GorillaEnemy)(po1 instanceof GorillaEnemy? po1 : po2);
+			gorilla.onFire = true;
+			gorilla.health-=5;
+		}
+		
+		if(po1 == Utils.player && po2 instanceof GorillaEnemy ||
+				po2 == Utils.player && po1 instanceof GorillaEnemy) {
+			Player player = Utils.player;
+			GorillaEnemy gorilla = (GorillaEnemy)(po1 instanceof GorillaEnemy? po1 : po2);
+			if(!player.dead) JFXwithJBox2d.playerSprite.setImageStrip("death", false, false);
+			player.health-=5;
+		}
+
 		if(po1 == Utils.player && po2 instanceof Box || po2 == Utils.player && po1 instanceof Box) {
 			Utils.lastLandscapeTime = System.nanoTime();
 		}
