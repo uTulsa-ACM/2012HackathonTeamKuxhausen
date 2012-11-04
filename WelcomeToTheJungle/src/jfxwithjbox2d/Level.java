@@ -13,7 +13,7 @@ public class Level {
 		ArrayList<PhysicsObject> list = new ArrayList<PhysicsObject>();
 		
 		
-		list.add(new Box(-50f,0f,200f,1f,0, BodyType.STATIC, Color.DARKGREEN));
+		list.add(new Box(-50f,0f,200f,3f,0, BodyType.STATIC, Color.DARKGREEN));
 		list.add(new Box(150f,0f,30f,1f,.85f, BodyType.STATIC, Color.DARKGREEN));
 		list.add(new Box(175f,-20f,30f,1f,.85f, BodyType.STATIC, Color.DARKGREEN));
 		list.add(new Box(200f,0f,10f,1f,0, BodyType.STATIC, Color.DARKGREEN));

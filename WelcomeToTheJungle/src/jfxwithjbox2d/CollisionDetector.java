@@ -31,15 +31,15 @@ public class CollisionDetector implements ContactListener {
 			Flame flame = (Flame)(po1 instanceof Flame? po1 : po2);
 			GorillaEnemy gorilla = (GorillaEnemy)(po1 instanceof GorillaEnemy? po1 : po2);
 			gorilla.onFire = true;
-			gorilla.health-=5;
+			gorilla.health-=1;
 		}
 		
 		if(po1 == Utils.player && po2 instanceof GorillaEnemy ||
 				po2 == Utils.player && po1 instanceof GorillaEnemy) {
 			Player player = Utils.player;
 			GorillaEnemy gorilla = (GorillaEnemy)(po1 instanceof GorillaEnemy? po1 : po2);
-			if(!player.dead) JFXwithJBox2d.playerSprite.setImageStrip("death", false, false);
-			player.health-=5;
+			if(!player.dead && !gorilla.dead) JFXwithJBox2d.playerSprite.setImageStrip("death", false, false);
+			if(!gorilla.dead) player.health-=5;
 		}
 
 		if(po1 == Utils.player && po2 instanceof Box || po2 == Utils.player && po1 instanceof Box) {

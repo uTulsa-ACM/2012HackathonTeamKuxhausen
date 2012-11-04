@@ -75,7 +75,7 @@ public class JFXwithJBox2d extends Application {
 	public void start(Stage primaryStage) {
 		new AudioPlayerSimple().play("BGM_0.ogg",-10.f); 
 		
-		primaryStage.setTitle("Hello JBox2d World!");
+		primaryStage.setTitle("TERRORFORM!");
 		primaryStage.setFullScreen(false);
 		primaryStage.setResizable(false);
 		//        Camera camera = new ParallelCamera();
