@@ -2,12 +2,13 @@ package jfxwithjbox2d;
 
 import javafx.scene.Node;
 
+import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.BodyType;
 
 public class PhysicsObject {
 
 	//JavaFX UI for ball
-    public Node node;
+    private Node node;
 	
 	//X and Y position of the object in JBox2D world
     protected float posX;
@@ -19,15 +20,32 @@ public class PhysicsObject {
      * are used for drawing hurdles and dynamic bodies (BodyType.DYNAMIC–movable bodies) 
      * are used for falling balls
      */
-    protected BodyType bodyType;
+    private Body body;
 
-	public PhysicsObject(float posX, float posY, BodyType bodyType, Node node) {
+	public PhysicsObject(float posX, float posY, Body body, Node node) {
 		super();
-		this.node = node;
 		this.posX = posX;
 		this.posY = posY;
-		this.bodyType = bodyType;
+		setNode(node);
+		setBody(body);
 	}
     
+    public void setBody(Body body) {
+    	this.body = body;
+    	if(this.node!=null) this.node.setUserData(body);
+    }
     
+    public void setNode(Node node) {
+    	if(this.node!=null) this.node.setUserData(null);
+    	this.node = node;
+    	if(this.node!=null) this.node.setUserData(this.body);
+    }
+
+	public Node getNode() {
+		return node;
+	}
+
+	public Body getBody() {
+		return body;
+	}
 }

@@ -113,7 +113,7 @@ public class JFXwithJBox2d extends Application {
 
 		//Add all balls to the root group
 		for(int i=0;i<Utils.NO_OF_BALLS;i++) {
-			root.getChildren().add(ball[i].node);
+			root.getChildren().add(ball[i].getNode());
 		}
 
 		//ON MOUSE EVENT
@@ -128,7 +128,7 @@ public class JFXwithJBox2d extends Application {
 				Ball hurdle = new Ball(Utils.toPosX(dragX), Utils.toPosY(dragY),2,BodyType.STATIC,Color.BLUE);
 				//Add ball to the root group
 				physicsObjects.add(hurdle);
-				root.getChildren().add(hurdle.node);
+				root.getChildren().add(hurdle.getNode());
 			}
 		};
 
@@ -159,15 +159,15 @@ public class JFXwithJBox2d extends Application {
 		//Create time step. Set Iteration count 8 for velocity and 3 for positions
 		Utils.world.step(timePassed, 8, 3); 
 
-		System.out.println(timePassed);
+//		System.out.println(timePassed);
 
 		//Move balls to the new position computed by JBox2D
 		for(PhysicsObject physicsObject : physicsObjects) {
-			Body body = (Body)physicsObject.node.getUserData();
+			Body body = (Body)physicsObject.getNode().getUserData();
 			float xpos = Utils.toPixelPosX(body.getPosition().x);
 			float ypos = Utils.toPixelPosY(body.getPosition().y);
-			physicsObject.node.setLayoutX(xpos);
-			physicsObject.node.setLayoutY(ypos);
+			physicsObject.getNode().setLayoutX(xpos);
+			physicsObject.getNode().setLayoutY(ypos);
 		}
 	}
 }

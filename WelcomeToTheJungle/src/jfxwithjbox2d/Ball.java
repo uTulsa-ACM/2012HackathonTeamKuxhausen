@@ -26,6 +26,8 @@ public class Ball extends PhysicsObject{
     //Gradient effects for balls
     private LinearGradient gradient;
     
+    private BodyType bodyType;
+    
     public Ball(float posX, float posY){
         this(posX, posY, Utils.BALL_SIZE, BodyType.DYNAMIC,Color.RED);
         this.posX = posX;
@@ -33,16 +35,17 @@ public class Ball extends PhysicsObject{
     }
 
     public Ball(float posX, float posY, int radius, BodyType bodyType, Color color){
-        super(posX, posY, bodyType, null);
+        super(posX, posY, null, null);
         this.radius = radius;
         this.gradient = Utils.getBallGradient(color);
-        node = create();
+        this.bodyType = bodyType;
+        create();
     }
     
     /*
      * This method creates a ball by using Circle object from JavaFX and CircleShape from JBox2D
      */
-    private Node create(){
+    private void create(){
         //Create an UI for ball - JavaFX code
         Circle ball = new Circle();
         ball.setRadius(radius);
@@ -80,6 +83,8 @@ public class Ball extends PhysicsObject{
         Body body = Utils.world.createBody(bd);
         body.createFixture(fd);
         ball.setUserData(body);
-        return ball;
+        
+        setBody(body);
+        setNode(ball);
     }
 }
