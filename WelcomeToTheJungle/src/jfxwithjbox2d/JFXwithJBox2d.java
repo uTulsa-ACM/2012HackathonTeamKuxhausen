@@ -87,8 +87,8 @@ public class JFXwithJBox2d extends Application {
 		 * Random locations between 5 to 95 on x axis and between 100 to 500 on y axis 
 		 */
 		for(int i=0;i<Utils.NO_OF_BALLS;i++) {
-			//ball[i]=new Box(r.nextInt(90)+5,r.nextInt(400)+100);
-			ball[i]=new Ball(r.nextInt(90)+5,r.nextInt(400)+100);
+			ball[i]=new Box(r.nextInt(90)+5,r.nextInt(400)+100);
+			//ball[i]=new Ball(r.nextInt(90)+5,r.nextInt(400)+100);
 			physicsObjects.add(ball[i]);
 		}
 
