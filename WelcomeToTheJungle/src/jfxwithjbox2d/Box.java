@@ -21,11 +21,10 @@ import org.jbox2d.dynamics.FixtureDef;
 
 /**
  *
- * @author dilip
  */
 public class Box extends PhysicsObject{
     
-    //Ball radius in pixels
+    //Ball radius in physics units
     private float width;
     private float height;
     private float angle;
@@ -34,13 +33,8 @@ public class Box extends PhysicsObject{
     private LinearGradient gradient;
     
     private BodyType bodyType;
-    
-    public Box(float posX, float posY){
-        this(posX, posY, Utils.BALL_SIZE*2, Utils.BALL_SIZE, 0.f, BodyType.DYNAMIC,Color.RED);
-//        this.posX = posX;
-//        this.posY = posY;
-    }
 
+    /** takes in distance values in physics units **/
     public Box(float posX, float posY, float width, float height, float angle, BodyType bodyType, Color color){
         super(null, null);
         this.width = width;
@@ -57,10 +51,10 @@ public class Box extends PhysicsObject{
     private void create(float posX, float posY, float angle){
         //Create an UI for ball - JavaFX code
         Rectangle box = new Rectangle();
-        box.setWidth(width);
-        box.setHeight(height);
-        box.setX(-width/2);
-        box.setY(-height/2);
+        box.setWidth(width*Utils.physicsToGraphicsFactor);
+        box.setHeight(height*Utils.physicsToGraphicsFactor);
+        box.setX(-(width*Utils.physicsToGraphicsFactor)/2);
+        box.setY(-(height*Utils.physicsToGraphicsFactor)/2);
         box.setRotate(180/Math.PI*angle);
         box.setFill(gradient); //set look and feel 
         
@@ -80,8 +74,8 @@ public class Box extends PhysicsObject{
         bd.position.set(posX, posY);
         
         PolygonShape ps = new PolygonShape();
-//        ps.m_radius = radius * 0.1f;  //We need to convert radius to JBox2D equivalent
-        ps.setAsBox(width*0.1f, height*0.1f, new Vec2(0.f,0.f), angle);
+        
+        ps.setAsBox(width/2, height/2, new Vec2(0.f,0.f), angle);
         
         // Create a fixture for ball
         FixtureDef fd = new FixtureDef();

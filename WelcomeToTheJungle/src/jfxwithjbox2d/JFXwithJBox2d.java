@@ -109,12 +109,15 @@ public class JFXwithJBox2d extends Application {
 
 		Duration duration = Duration.seconds(1.0/60.0); // Set duration for frame.
 		
-//		final SpriteClass spriteClass = new SpriteClass();
-//		spriteClass.putImageStrip("horse", "http://upload.wikimedia.org/wikipedia/commons/7/73/The_Horse_in_Motion.jpg", 4, 10, 18, 25, 374, 243, 0.5f);
-//		final Sprite sprite = spriteClass.new Sprite();
-//		sprite.setImageStrip("horse", true, true);
-//		root.getChildren().add(sprite.imageView);
-
+		SpriteClass spriteClass = new SpriteClass();
+		spriteClass.putImageStrip("horse", "C:/Users/Eric Kuxhausen/Documents/My Dropbox/Hackathon Files/art/Character/runcombined.png", 4, 4, 0, 0, 74, 65, 0.5f);
+		final Sprite sprite = spriteClass.new Sprite(80, 80);
+		Ball b = new Ball(1, 1, 1, BodyType.DYNAMIC,Color.ALICEBLUE);
+		Utils.player.setNode(sprite.imageView);
+ 		physicsObjects.add(b);
+		root.getChildren().add(Utils.player.getNode());
+		sprite.setImageStrip("horse", true, true);
+		
 		//UPDATE event
 		//Create an ActionEvent, on trigger it executes a world time step and moves the balls to new position 
 		EventHandler<ActionEvent> ae = new EventHandler<ActionEvent>() {
@@ -123,7 +126,7 @@ public class JFXwithJBox2d extends Application {
 				float timePassed = (float)(newtime - time)/1000000000;
 				time = newtime;
 				timeStep(timePassed);
-//				sprite.update(timePassed);
+				sprite.update(timePassed);
 			}
 		};
 

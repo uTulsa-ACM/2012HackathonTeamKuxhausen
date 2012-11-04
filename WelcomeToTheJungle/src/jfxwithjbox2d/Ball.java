@@ -20,19 +20,16 @@ import org.jbox2d.dynamics.FixtureDef;
  */
 public class Ball extends PhysicsObject{
     
-    //Ball radius in pixels
-    private int radius;
+    //Ball radius in physics units
+    private float radius;
 
     //Gradient effects for balls
     private LinearGradient gradient;
     
     private BodyType bodyType;
-    
-    public Ball(float posX, float posY){
-        this(posX, posY, Utils.BALL_SIZE, BodyType.DYNAMIC,Color.RED);
-    }
 
-    public Ball(float posX, float posY, int radius, BodyType bodyType, Color color){
+    /** takes in distance values in physics units **/
+    public Ball(float posX, float posY, float radius, BodyType bodyType, Color color){
         super( null, null);
         this.radius = radius;
         this.gradient = Utils.getBallGradient(color);
@@ -46,7 +43,7 @@ public class Ball extends PhysicsObject{
     private void create(float posX, float posY){
         //Create an UI for ball - JavaFX code
         Circle ball = new Circle();
-        ball.setRadius(radius);
+        ball.setRadius(radius*Utils.physicsToGraphicsFactor);
         ball.setFill(gradient); //set look and feel 
         
         /*
@@ -59,13 +56,13 @@ public class Ball extends PhysicsObject{
        
         ball.setCache(true); //Cache this object for better performance
         
-        //Create an JBox2D body defination for ball.
+        //Create an JBox2D body definition for ball.
         BodyDef bd = new BodyDef();
         bd.type = bodyType;
         bd.position.set(posX, posY);
         
         CircleShape cs = new CircleShape();
-        cs.m_radius = radius * 0.1f;  //We need to convert radius to JBox2D equivalent
+        cs.m_radius = radius;
         
         // Create a fixture for ball
         FixtureDef fd = new FixtureDef();

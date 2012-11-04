@@ -1,5 +1,6 @@
 package jfxwithjbox2d;
 
+import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,6 +14,12 @@ import javafx.scene.image.ImageView;
 //		sprite.setImageStrip("horse", true, true);
 //		root.getChildren().add(sprite.imageView);
 // UPDATE SPRITE IN TIMESTEP METHOD.
+//		spriteClass.putImageStrip("horse", "C:/Users/lcbrooks/Dropbox/Hackathon Files/art/Character/runcombined.png", 4, 4, 0, 0, 74, 65, 0.5f);
+//		final Sprite sprite = spriteClass.new Sprite(74, 65);
+//		Ball b = new Ball(20, 20, 65, BodyType.DYNAMIC,Color.ALICEBLUE);
+//		b.setNode(sprite.imageView);
+// 		physicsObjects.add(b);
+//		root.getChildren().add(b.getNode());
 
 public class SpriteClass {
 	private Map<String, ImageStrip> imageStrips;
@@ -23,12 +30,28 @@ public class SpriteClass {
 	
 	public ImageStrip putImageStrip(String label, String path, int columns, int count, int xOffset,
 			int yOffset, int width, int height, float duration) {
-		return imageStrips.put(label, new ImageStrip(path, columns, count, xOffset, yOffset, width, height, duration));
+		try {
+			return imageStrips.put(label, new ImageStrip(path, columns, count, xOffset, yOffset, width, height, duration));
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
 	}
 	
 	public ImageStrip putImageStrip(String label, Image image, int columns, int count, int xOffset,
 			int yOffset, int width, int height, float duration) {
 		return imageStrips.put(label, new ImageStrip(image, columns, count, xOffset, yOffset, width, height, duration));
+	}
+
+	public ImageStrip putImageStrip(String label, String path, int count, float duration) {
+		try {
+			return imageStrips.put(label, new ImageStrip(path, count, duration));
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
 	}
 	
 	public ImageStrip removeImageStrip(String label) {
@@ -42,14 +65,18 @@ public class SpriteClass {
 	    private boolean looping; // do we loop?
 	    private ImageStrip imageStrip;
 	    private int previousIndex;
+	    private float physicsWidth;
+	    private float physicsHeight;
 	    
-	    public Sprite() {
+	    public Sprite(float physicsWidth, float physicsHeight) {
 	    	imageView = new ImageView();
 	    	progress = 0.f; // doesn't matter
 	    	running = false; // doesn't matter
 	    	looping = false;
 	    	imageStrip = null; // don't have anything to render
 	    	previousIndex = -1; // no current index in frame
+	    	this.physicsWidth = physicsWidth;
+	    	this.physicsHeight = physicsHeight;
 	    }
 	    
 	    @Override
@@ -73,10 +100,14 @@ public class SpriteClass {
 	    	setImageStrip(imageStrips.get(label), running, looping);
 	    }
 	    
-	    public void setImageStrip(ImageStrip imageStrip, boolean running, boolean looping) {
+	    private void setImageStrip(ImageStrip imageStrip, boolean running, boolean looping) {
 	    	this.imageStrip = imageStrip;
-	    	progress = 2.f;
+	    	progress = 0.f;
 	    	imageView.setImage(imageStrip.image);
+//	    	imageView.setTranslateX(-physicsWidth/2*1.f);
+//	    	imageView.setTranslateY(-physicsHeight/2*1.f);
+	    	imageView.setScaleX(physicsWidth/imageStrip.width*1.f);
+	    	imageView.setScaleY(physicsHeight/imageStrip.height*1.f);
 	    	setIndex(0);
 	    	this.running = running;
 	    	this.looping = looping;
@@ -94,6 +125,10 @@ public class SpriteClass {
 	    	final int x = (index % imageStrip.columns) * imageStrip.width  + imageStrip.xOffset;
 	    	final int y = (index / imageStrip.columns) * imageStrip.height + imageStrip.yOffset;
 	    	imageView.setViewport(new Rectangle2D(x, y, imageStrip.width, imageStrip.height));
+	    	imageView.setScaleX(physicsWidth/imageStrip.width*1.f);
+	    	imageView.setScaleY(physicsHeight/imageStrip.height*1.f);
+	    	imageView.setTranslateX(-physicsWidth/2);
+	    	imageView.setTranslateY(-physicsHeight/2);
 	    	previousIndex = index;
 	    }
 	}
