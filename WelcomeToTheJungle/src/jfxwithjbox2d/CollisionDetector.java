@@ -23,7 +23,7 @@ public class CollisionDetector implements ContactListener {
 			TreeSegment segment = (TreeSegment)(po1 instanceof TreeSegment? po1 : po2);
 //			System.out.println("BURNINATIN'");
 			segment.onFire = true;
-			segment.health-=100;
+			segment.health-=50;
 		}
 	}
 

@@ -56,7 +56,12 @@ public class JFXwithJBox2d extends Application {
     final static Set<Updatee> updatees = new HashSet<Updatee>();
 	static Group root;
 	
+	FlameAudioTest flameAudio = new FlameAudioTest();
+	protected boolean flamethrowing = false;
+	
 	long time = System.nanoTime();
+	protected float dragX;
+	protected float dragY;
 
 	public static void main(String[] args) {
 		Application.launch(args);
@@ -64,6 +69,8 @@ public class JFXwithJBox2d extends Application {
 
 	@Override
 	public void start(Stage primaryStage) {
+		new AudioPlayerSimple().play("BGM_0.ogg",-10.f); 
+		
 		primaryStage.setTitle("Hello JBox2d World!");
 		primaryStage.setFullScreen(false);
 		primaryStage.setResizable(false);
@@ -171,24 +178,26 @@ public class JFXwithJBox2d extends Application {
 		EventHandler<MouseEvent> addHurdle = new EventHandler<MouseEvent>(){
 			public void handle(MouseEvent me) {
 				//Get mouse's x and y coordinates on the scene
-				float dragX = (float)me.getSceneX();
-				float dragY = (float)me.getSceneY();
+				dragX = (float)me.getSceneX();
+				dragY = (float)me.getSceneY();
 				
-				float dx = Utils.toPosX(dragX)- Utils.player.getBody().getPosition().x;
-				float dy = Utils.toPosY(dragY) - Utils.player.getBody().getPosition().y;
-				Vec2 impulse = new Vec2(dx, dy);
-				impulse.normalize();
-				//Vec2f impulse.mul(.5f);
-				impulse.mulLocal(.1f);
 				
-				//hurdle.getBody().getPosition();
-				
-				//Draw ball on this location. Set balls body type to static.
-				//Ball hurdle = new Ball(Utils.toPosX(dragX), Utils.toPosY(dragY),.02f,BodyType.DYNAMIC,Color.BLUE);
-				//TreeSegment hurdle = new TreeSegment(Utils.toPosX(dragX), Utils.toPosY(dragY),.2f,.4f , 1f);
-				Flame hurdle = new Flame(Utils.player.getBody().getPosition().x, Utils.player.getBody().getPosition().y, .1f);
-				hurdle.getBody().applyLinearImpulse(impulse, hurdle.getBody().getPosition());
-				
+			}
+		};
+		
+		EventHandler<MouseEvent> onMouseDown = new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent arg0) {
+				flameAudio.activate();
+				flamethrowing = true;
+			}
+		};
+		
+		EventHandler<MouseEvent> onMouseUp = new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent arg0) {
+				flameAudio.deactivate();
+				flamethrowing = false;
 			}
 		};
 
@@ -212,6 +221,8 @@ public class JFXwithJBox2d extends Application {
 
 		scene.setOnKeyPressed(keyboardEvent);
 		scene.setOnMouseDragged(addHurdle);
+		scene.setOnMousePressed(onMouseDown);
+		scene.setOnMouseReleased(onMouseUp);
 		
 //        final ImageView imageView = new ImageView(/*IMAGE*/);
 //        imageView.setViewport(new Rectangle2D(OFFSET_X, OFFSET_Y, WIDTH, HEIGHT));
@@ -232,6 +243,7 @@ public class JFXwithJBox2d extends Application {
 	}
 
 	protected void timeStep(float timePassed/*ish*/) {
+		
 		//Create time step. Set Iteration count 8 for velocity and 3 for positions
 		Utils.world.step(timePassed, 8, 3); 
 
@@ -259,5 +271,23 @@ public class JFXwithJBox2d extends Application {
 			physicsObject.getNode().setLayoutX(xpos);
 			physicsObject.getNode().setLayoutY(ypos);
 		}
+		
+		if(flamethrowing) {
+			float dx = Utils.toPosX(dragX)- Utils.player.getBody().getPosition().x;
+			float dy = Utils.toPosY(dragY) - Utils.player.getBody().getPosition().y;
+			Vec2 impulse = new Vec2(dx, dy);
+			impulse.normalize();
+			//Vec2f impulse.mul(.5f);
+			impulse.mulLocal(.1f);
+
+			//hurdle.getBody().getPosition();
+
+			//Draw ball on this location. Set balls body type to static.
+			//Ball hurdle = new Ball(Utils.toPosX(dragX), Utils.toPosY(dragY),.02f,BodyType.DYNAMIC,Color.BLUE);
+			//TreeSegment hurdle = new TreeSegment(Utils.toPosX(dragX), Utils.toPosY(dragY),.2f,.4f , 1f);
+			Flame hurdle = new Flame(Utils.player.getBody().getPosition().x, Utils.player.getBody().getPosition().y, .1f);
+			hurdle.getBody().applyLinearImpulse(impulse, hurdle.getBody().getPosition());
+		}
+
 	}
 }
