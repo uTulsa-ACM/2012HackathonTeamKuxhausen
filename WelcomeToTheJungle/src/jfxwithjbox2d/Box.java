@@ -36,24 +36,22 @@ public class Box extends PhysicsObject{
     
     public Box(float posX, float posY){
         this(posX, posY, 50, 200, (float)Math.PI/4, BodyType.DYNAMIC,Color.RED);
-        this.posX = posX;
-        this.posY = posY;
     }
 
     public Box(float posX, float posY, float width, float height, float angle, BodyType bodyType, Color color){
-        super(posX, posY, null, null);
+        super(null, null);
         this.width = width;
         this.height = height;
         this.angle = angle;
         this.gradient = Utils.getBallGradient(color);
         this.bodyType = bodyType;
-        create();
+        create(posX, posY);
     }
     
     /*
      * This method creates a ball by using Circle object from JavaFX and CircleShape from JBox2D
      */
-    private void create(){
+    private void create(float posX, float posY){
         //Create an UI for ball - JavaFX code
     	Rectangle box = new Rectangle();
     	box.setWidth(width);
@@ -114,4 +112,10 @@ public class Box extends PhysicsObject{
         setBody(body);
         setNode(box);
     }
+
+	@Override
+	public void act() {
+		// TODO Auto-generated method stub
+		
+	}
 }

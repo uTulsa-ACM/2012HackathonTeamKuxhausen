@@ -1,43 +1,32 @@
-/*
- * To change this template, choose Tools | Templates and open the template in
- * the editor.
- */
 package jfxwithjbox2d;
 
 import javafx.scene.Node;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.LinearGradient;
 import javafx.scene.shape.Circle;
+
 import org.jbox2d.collision.shapes.CircleShape;
 import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.BodyDef;
 import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.FixtureDef;
 
-/**
- *
- * @author dilip
- */
-public class Ball extends PhysicsObject{
-    
-    //Ball radius in pixels
+public class Player extends PhysicsObject {
+
+	//Ball radius in pixels
     private int radius;
 
     //Gradient effects for balls
     private LinearGradient gradient;
     
     private BodyType bodyType;
-    
-    public Ball(float posX, float posY){
-        this(posX, posY, Utils.BALL_SIZE, BodyType.DYNAMIC,Color.RED);
-    }
-
-    public Ball(float posX, float posY, int radius, BodyType bodyType, Color color){
-        super( null, null);
-        this.radius = radius;
-        this.gradient = Utils.getBallGradient(color);
-        this.bodyType = bodyType;
-        create(posX, posY);
+	
+	public Player(float posX, float posY) {
+		super(null, null);
+		this.radius = Utils.BALL_SIZE*3;
+        this.gradient = Utils.getBallGradient(Color.GREEN);
+        this.bodyType = BodyType.DYNAMIC;
+        create(posX,posY);
     }
     
     /*

@@ -31,6 +31,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import jfxwithjbox2d.SpriteClass.Sprite;
 
+import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.BodyType;
 
@@ -39,7 +40,8 @@ import org.jbox2d.dynamics.BodyType;
  * @author dilip
  */
 public class JFXwithJBox2d extends Application {
-    private static final Image IMAGE = new Image("http://upload.wikimedia.org/wikipedia/commons/7/73/The_Horse_in_Motion.jpg");
+    
+	//private static final Image IMAGE = new Image("http://upload.wikimedia.org/wikipedia/commons/7/73/The_Horse_in_Motion.jpg");
 
     private static final int COLUMNS  =   4;
     private static final int COUNT    =  10;
@@ -66,16 +68,27 @@ public class JFXwithJBox2d extends Application {
 		final Scene scene = new Scene(root, Utils.WIDTH, Utils.HEIGHT,Color.BLACK);
 
 		//Ball array for hold the  balls
-		final Box[] ball = new Box[Utils.NO_OF_BALLS];
+		final PhysicsObject[] ball = new PhysicsObject[Utils.NO_OF_BALLS];
 
 		Random r = new Random(System.currentTimeMillis());
 
+		
+		//Add player
+		Utils.player = new Player(r.nextInt(90)+5,r.nextInt(200)+100);//Utils.toPosX(20), Utils.toPixelPosY(20));
+		physicsObjects.add(Utils.player);
+		root.getChildren().add(Utils.player.getNode());
+		//center camera on player
+		Utils.cameraX = Utils.player.getBody().getPosition().x-50;
+		Utils.cameraY = Utils.player.getBody().getPosition().y-50;
+
+		
 		/**
 		 * Generate balls and position them on random locations.  
 		 * Random locations between 5 to 95 on x axis and between 100 to 500 on y axis 
 		 */
 		for(int i=0;i<Utils.NO_OF_BALLS;i++) {
-			ball[i]=new Box(r.nextInt(90)+5,r.nextInt(400)+100);
+			//ball[i]=new Box(r.nextInt(90)+5,r.nextInt(400)+100);
+			ball[i]=new Ball(r.nextInt(90)+5,r.nextInt(400)+100);
 			physicsObjects.add(ball[i]);
 		}
 
@@ -156,24 +169,22 @@ public class JFXwithJBox2d extends Application {
 		};
 
 		//ON KEY EVENT
-		//Draw hurdles on mouse event.
-		EventHandler<KeyEvent> keyboardEvent = new EventHandler<KeyEvent>(){
-			public void handle(KeyEvent me) {
-				//Get mouse's x and y coordinates on the scene
+				//Draw hurdles on mouse event.
+				EventHandler<KeyEvent> keyboardEvent = new EventHandler<KeyEvent>(){
+					public void handle(KeyEvent me) {
+						//Get mouse's x and y coordinates on the scene
 
-				if(me.getCode() == KeyCode.A){
-					Utils.cameraX+=10;
-				}else if(me.getCode() == KeyCode.D){
-					Utils.cameraX-=10;
-				}else if(me.getCode()==KeyCode.S){
-					Utils.cameraY-=10;
-				}else if(me.getCode()==KeyCode.W){
-					Utils.cameraY+=10;
-				}
+						if(me.getCode() == KeyCode.A){
+							Utils.player.getBody().setLinearVelocity(new Vec2(-10,0));
+						}else if(me.getCode() == KeyCode.D){
+							Utils.player.getBody().setLinearVelocity(new Vec2(10,0));//.applyForce(new Vec2(1000,0), Utils.player.getBody().getPosition());
+						}else if(me.getCode() == KeyCode.SPACE || me.getCode()== KeyCode.W){
+							Utils.player.getBody().setLinearVelocity(new Vec2(0,10));//.applyForce(new Vec2(0,100), Utils.player.getBody().getPosition());
+						}
 
-			}
+					}
 
-		};
+				};
 
 		scene.setOnKeyPressed(keyboardEvent);
 		scene.setOnMouseDragged(addHurdle);
@@ -200,7 +211,13 @@ public class JFXwithJBox2d extends Application {
 		//Create time step. Set Iteration count 8 for velocity and 3 for positions
 		Utils.world.step(timePassed, 8, 3); 
 
-//		System.out.println(timePassed);
+		//allow each object to perform any custom behavior
+		for(PhysicsObject physicsObject : physicsObjects) {
+			physicsObject.act();
+		}
+		
+		//Update camera
+		Utils.updateCamera();
 
 		//Move balls to the new position computed by JBox2D
 		for(PhysicsObject physicsObject : physicsObjects) {

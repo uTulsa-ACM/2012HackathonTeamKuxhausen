@@ -22,6 +22,8 @@ public class Utils {
     //Create a JBox2D world. 
     public static final World world = new World(new Vec2(0.0f, -10.0f), true);
     
+    public static Player player;
+    
     //Screen width and height
     public static final int WIDTH = 800;
     public static final int HEIGHT = 600;
@@ -29,12 +31,13 @@ public class Utils {
     //Camera offset in world space
     public static float cameraX = 0;
     public static float cameraY =0;
+    private static final float cameraVelocity = 0;
     
     //Ball radius in pixel
     public static final int BALL_SIZE = 8;
     
     //Total number of balls
-    public final static int NO_OF_BALLS = 1; 
+    public final static int NO_OF_BALLS = 10; 
     
     //Ball gradient
     private final static LinearGradient BALL_GRADIENT = new LinearGradient(0.0, 0.0, 1.0, 0.0, true, CycleMethod.NO_CYCLE, new Stop[] { new Stop(0, Color.WHITE), new Stop(1, Color.RED)});
@@ -109,6 +112,12 @@ public class Utils {
     //Convert a JBox2D height to pixel height
     public static float toPixelHeight(float height) {
         return HEIGHT*height/100.0f;
+        
     }
+    
+    public static void updateCamera() {
+		cameraX += .00001*Math.pow(((player.getBody().getPosition().x-cameraX)-50),3);
+		cameraY += .00001*Math.pow(((player.getBody().getPosition().y-cameraY)-50),3);
+	}
  
 }

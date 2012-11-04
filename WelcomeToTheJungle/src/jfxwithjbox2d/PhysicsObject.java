@@ -5,27 +5,21 @@ import javafx.scene.Node;
 import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.BodyType;
 
-public class PhysicsObject {
+public abstract class PhysicsObject {
 
 	//JavaFX UI for ball
     private Node node;
-	
-	//X and Y position of the object in JBox2D world
-    protected float posX;
-    protected float posY;
     
     /*
      * There are three types bodies in JBox2D Static, Kinematic and dynamic 
-     * In this application static bodies (BodyType.STATIC â€“ non movable bodies) 
-     * are used for drawing hurdles and dynamic bodies (BodyType.DYNAMICâ€“movable bodies) 
+     * In this application static bodies (BodyType.STATIC – non movable bodies) 
+     * are used for drawing hurdles and dynamic bodies (BodyType.DYNAMIC–movable bodies) 
      * are used for falling balls
      */
     private Body body;
 
-	public PhysicsObject(float posX, float posY, Body body, Node node) {
+	public PhysicsObject(Body body, Node node) {
 		super();
-		this.posX = posX;
-		this.posY = posY;
 		setNode(node);
 		setBody(body);
 	}
@@ -48,4 +42,6 @@ public class PhysicsObject {
 	public Body getBody() {
 		return body;
 	}
+	
+	public abstract void act();
 }
