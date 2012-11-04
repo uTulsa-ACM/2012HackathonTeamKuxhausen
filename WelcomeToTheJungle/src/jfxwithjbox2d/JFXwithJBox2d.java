@@ -148,7 +148,6 @@ public class JFXwithJBox2d extends Application {
 			}
 		};
 
-
 		/**
 		 * Set ActionEvent and duration to the KeyFrame. 
 		 * The ActionEvent is trigged when KeyFrame execution is over. 
@@ -223,7 +222,7 @@ public class JFXwithJBox2d extends Application {
 									//Utils.player.getBody().applyForce(new Vec2(5f,0f), Utils.player.getBody().getPosition());
 									Utils.player.getBody().setLinearVelocity(new Vec2(Utils.player.getBody().getLinearVelocity().x+2f,Utils.player.getBody().getLinearVelocity().y));
 								}
-							}else if((me.getCode() == KeyCode.SPACE || me.getCode()== KeyCode.W) && (float)(time-Utils.lastLandscapeTime)/1000000000 < 0.1f){
+							}else if((me.getCode() == KeyCode.SPACE || me.getCode()== KeyCode.W) && ((float)(time-Utils.lastLandscapeTime)/1000000000 < 0.1f)||Math.abs(Utils.player.getBody().getLinearVelocity().y)<0.01f) {
 								Utils.player.getBody().setLinearVelocity(Utils.player.getBody().getLinearVelocity().add(new Vec2(0,5f)));//.applyForce(new Vec2(0,100), Utils.player.getBody().getPosition());
 								Utils.lastLandscapeTime -= 1000000000;
 							}
