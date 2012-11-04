@@ -6,6 +6,7 @@ package jfxwithjbox2d;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Random;
 import java.util.Set;
 
@@ -51,7 +52,11 @@ public class JFXwithJBox2d extends Application {
     private static final int WIDTH    = 374;
     private static final int HEIGHT   = 243;
     
-	final Set<PhysicsObject> physicsObjects = new HashSet<PhysicsObject>();
+    final static Set<PhysicsObject> physicsObjects = new HashSet<PhysicsObject>();
+    final static Set<Updatee> updatees = new HashSet<Updatee>();
+	static Group root;
+	
+	
 	long time = System.nanoTime();
 
 	public static void main(String[] args) {
@@ -65,7 +70,7 @@ public class JFXwithJBox2d extends Application {
 		primaryStage.setResizable(false);
 		//        Camera camera = new ParallelCamera();
 
-		final Group root = new Group(); //Create a group for holding all objects on the screen
+		root = new Group(); //Create a group for holding all objects on the screen
 		final Scene scene = new Scene(root, Utils.WIDTH, Utils.HEIGHT,Color.BLACK);
 
 		//Ball array for hold the  balls
@@ -77,10 +82,18 @@ public class JFXwithJBox2d extends Application {
 		//Add player
 		Utils.player = new Player(4,3);
 		physicsObjects.add(Utils.player);
+		SpriteClass spriteClass = new SpriteClass();
+		spriteClass.putImageStrip("horse", "./runcombined.png", 4, 4, 0, 0, 74, 65, 0.5f);
+		final Sprite sprite = spriteClass.new Sprite(80, 80);
+		updatees.add(sprite);
+		Utils.player.setNode(sprite.imageView);
 		root.getChildren().add(Utils.player.getNode());
+		sprite.setImageStrip("horse", true, true);
+		
 		//center camera on player
 		Utils.cameraX = Utils.player.getBody().getPosition().x-4;
 		Utils.cameraY = Utils.player.getBody().getPosition().y-3;
+		
 
 		//Add terain 
 		Level level = new Level();
@@ -109,14 +122,7 @@ public class JFXwithJBox2d extends Application {
 
 		Duration duration = Duration.seconds(1.0/60.0); // Set duration for frame.
 		
-		SpriteClass spriteClass = new SpriteClass();
-		spriteClass.putImageStrip("horse", "C:/Users/Eric Kuxhausen/Documents/My Dropbox/Hackathon Files/art/Character/runcombined.png", 4, 4, 0, 0, 74, 65, 0.5f);
-		final Sprite sprite = spriteClass.new Sprite(80, 80);
-		Ball b = new Ball(1, 1, 1, BodyType.DYNAMIC,Color.ALICEBLUE);
-		Utils.player.setNode(sprite.imageView);
- 		physicsObjects.add(b);
-		root.getChildren().add(Utils.player.getNode());
-		sprite.setImageStrip("horse", true, true);
+		
 		
 		//UPDATE event
 		//Create an ActionEvent, on trigger it executes a world time step and moves the balls to new position 
@@ -126,7 +132,7 @@ public class JFXwithJBox2d extends Application {
 				float timePassed = (float)(newtime - time)/1000000000;
 				time = newtime;
 				timeStep(timePassed);
-				sprite.update(timePassed);
+				for(Updatee updatee : updatees) updatee.update(timePassed);
 			}
 		};
 
@@ -166,13 +172,19 @@ public class JFXwithJBox2d extends Application {
 				//Get mouse's x and y coordinates on the scene
 				float dragX = (float)me.getSceneX();
 				float dragY = (float)me.getSceneY();
-
+				
+				float dx = Utils.toPosX(dragX)- Utils.player.getBody().getPosition().x;
+				float dy = Utils.toPosY(dragY) - Utils.player.getBody().getPosition().y;
+				Vec2 impulse = new Vec2(dx, dy);
+				impulse.normalize();
+				impulse.mulLocal(.1f);
+				
 				//Draw ball on this location. Set balls body type to static.
 				//Ball hurdle = new Ball(Utils.toPosX(dragX), Utils.toPosY(dragY),.02f,BodyType.DYNAMIC,Color.BLUE);
-				Box hurdle = new Box(Utils.toPosX(dragX), Utils.toPosY(dragY),.2f,.4f , 1f,BodyType.DYNAMIC,Color.BLUE);
-				//Add ball to the root group
-				physicsObjects.add(hurdle);
-				root.getChildren().add(hurdle.getNode());
+				//TreeSegment hurdle = new TreeSegment(Utils.toPosX(dragX), Utils.toPosY(dragY),.2f,.4f , 1f);
+				Flame hurdle = new Flame(Utils.player.getBody().getPosition().x, Utils.player.getBody().getPosition().y, .1f);
+				hurdle.getBody().applyLinearImpulse(impulse, hurdle.getBody().getPosition());
+				
 			}
 		};
 
@@ -183,11 +195,11 @@ public class JFXwithJBox2d extends Application {
 						//Get mouse's x and y coordinates on the scene
 
 						if(me.getCode() == KeyCode.A){
-							Utils.player.getBody().setLinearVelocity(new Vec2(-1f,0));
+							Utils.player.getBody().applyLinearImpulse(new Vec2(-.5f,0), Utils.player.getBody().getPosition());//(Utils.player.getBody().getLinearVelocity().add(new Vec2(-1f,0)));
 						}else if(me.getCode() == KeyCode.D){
-							Utils.player.getBody().setLinearVelocity(new Vec2(1f,0));//.applyForce(new Vec2(1000,0), Utils.player.getBody().getPosition());
+							Utils.player.getBody().applyLinearImpulse(new Vec2(.5f,0), Utils.player.getBody().getPosition());//setLinearVelocity(Utils.player.getBody().getLinearVelocity().add(new Vec2(1f,0)));//.applyForce(new Vec2(1000,0), Utils.player.getBody().getPosition());
 						}else if(me.getCode() == KeyCode.SPACE || me.getCode()== KeyCode.W){
-							Utils.player.getBody().setLinearVelocity(new Vec2(0,3f));//.applyForce(new Vec2(0,100), Utils.player.getBody().getPosition());
+							Utils.player.getBody().setLinearVelocity(Utils.player.getBody().getLinearVelocity().add(new Vec2(0,1f)));//.applyForce(new Vec2(0,100), Utils.player.getBody().getPosition());
 						}
 
 					}
@@ -220,8 +232,13 @@ public class JFXwithJBox2d extends Application {
 		Utils.world.step(timePassed, 8, 3); 
 
 		//allow each object to perform any custom behavior
-		for(PhysicsObject physicsObject : physicsObjects) {
-			physicsObject.act();
+		for(Iterator<PhysicsObject> iter = physicsObjects.iterator(); iter.hasNext();) {
+			PhysicsObject physicsObject = iter.next();
+			if(physicsObject.act()) {
+				iter.remove();
+				JFXwithJBox2d.root.getChildren().remove(physicsObject.getNode());
+				Utils.world.destroyBody(physicsObject.getBody());
+			}
 		}
 		
 		//Update camera

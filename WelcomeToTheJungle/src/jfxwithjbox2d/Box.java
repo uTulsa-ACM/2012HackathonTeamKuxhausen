@@ -25,9 +25,9 @@ import org.jbox2d.dynamics.FixtureDef;
 public class Box extends PhysicsObject{
     
     //Ball radius in physics units
-    private float width;
-    private float height;
-    private float angle;
+    protected float width;
+    protected float height;
+    protected float angle;
 
     //Gradient effects for balls
     private LinearGradient gradient;
@@ -97,8 +97,8 @@ public class Box extends PhysicsObject{
     }
 
 	@Override
-	public void act() {
-		// TODO Auto-generated method stub
+	public boolean act() {
+		return false;// TODO Auto-generated method stub
 		
 	}
 }

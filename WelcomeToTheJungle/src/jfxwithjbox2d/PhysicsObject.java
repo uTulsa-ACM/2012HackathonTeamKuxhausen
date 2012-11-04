@@ -43,5 +43,5 @@ public abstract class PhysicsObject {
 		return body;
 	}
 	
-	public abstract void act();
+	public abstract boolean act();
 }

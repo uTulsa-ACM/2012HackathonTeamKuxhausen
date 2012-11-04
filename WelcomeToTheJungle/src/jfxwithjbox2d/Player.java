@@ -76,8 +76,8 @@ public class Player extends PhysicsObject {
     }
 
 	@Override
-	public void act() {
+	public boolean act() {
 		// TODO Auto-generated method stub
-		
+		return false;
 	}
 }
