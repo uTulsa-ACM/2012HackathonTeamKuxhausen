@@ -106,7 +106,7 @@ public class SpriteClass {
 	    	imageView.setImage(imageStrip.image);
 //	    	imageView.setTranslateX(-physicsWidth/2*1.f);
 //	    	imageView.setTranslateY(-physicsHeight/2*1.f);
-	    	imageView.setScaleX(physicsWidth/imageStrip.width*1.f);
+	    	imageView.setScaleX(Math.signum(imageView.getScaleX())*physicsWidth/imageStrip.width*1.f);
 	    	imageView.setScaleY(physicsHeight/imageStrip.height*1.f);
 	    	setIndex(0);
 	    	this.running = running;
@@ -125,7 +125,7 @@ public class SpriteClass {
 	    	final int x = (index % imageStrip.columns) * imageStrip.width  + imageStrip.xOffset;
 	    	final int y = (index / imageStrip.columns) * imageStrip.height + imageStrip.yOffset;
 	    	imageView.setViewport(new Rectangle2D(x, y, imageStrip.width, imageStrip.height));
-	    	imageView.setScaleX(physicsWidth/imageStrip.width*1.f);
+	    	imageView.setScaleX(Math.signum(imageView.getScaleX())*physicsWidth/imageStrip.width*1.f);
 	    	imageView.setScaleY(physicsHeight/imageStrip.height*1.f);
 	    	imageView.setTranslateX(-physicsWidth/2);
 	    	imageView.setTranslateY(-physicsHeight/2);
