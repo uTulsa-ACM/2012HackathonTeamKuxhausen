@@ -95,7 +95,7 @@ public class JFXwithJBox2d extends Application {
 		CollisionDetector cd = new CollisionDetector();
 		Utils.world.setContactListener(cd);
 		
-//		Ball asdf = new Ball(0, 0, 0, BodyType.STATIC, Color.ALICEBLUE);
+//		Ball asdf = new Ball(0, 2, 0, BodyType.STATIC, Color.ALICEBLUE);
 //		SpriteClass bgclass = new SpriteClass();
 //		bgclass.putImageStrip("bg", "background.png", 1, 1.f);
 //		Sprite bgsprite = bgclass.new Sprite(661,256);
@@ -104,7 +104,7 @@ public class JFXwithJBox2d extends Application {
 //		bgsprite.setImageStrip("bg", false, false);
 ////		bgsprite.imageView.setTranslateY(200);
 //		asdf.setNode(bgsprite.imageView);
-		
+//		physicsObjects.add(asdf);
 		
 		//Add player
 		Utils.player = new Player(4,3);
