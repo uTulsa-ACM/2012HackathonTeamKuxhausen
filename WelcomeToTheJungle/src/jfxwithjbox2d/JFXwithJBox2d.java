@@ -8,22 +8,29 @@ import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
+import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Point3D;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Camera;
 import javafx.scene.Group;
 import javafx.scene.ParallelCamera;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import jfxwithjbox2d.SpriteClass.Sprite;
+
 import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.BodyType;
 
@@ -32,6 +39,15 @@ import org.jbox2d.dynamics.BodyType;
  * @author dilip
  */
 public class JFXwithJBox2d extends Application {
+    private static final Image IMAGE = new Image("http://upload.wikimedia.org/wikipedia/commons/7/73/The_Horse_in_Motion.jpg");
+
+    private static final int COLUMNS  =   4;
+    private static final int COUNT    =  10;
+    private static final int OFFSET_X =  18;
+    private static final int OFFSET_Y =  25;
+    private static final int WIDTH    = 374;
+    private static final int HEIGHT   = 243;
+    
 	final Set<PhysicsObject> physicsObjects = new HashSet<PhysicsObject>();
 	long time = System.nanoTime();
 
@@ -50,7 +66,7 @@ public class JFXwithJBox2d extends Application {
 		final Scene scene = new Scene(root, Utils.WIDTH, Utils.HEIGHT,Color.BLACK);
 
 		//Ball array for hold the  balls
-		final Ball[] ball = new Ball[Utils.NO_OF_BALLS];
+		final Box[] ball = new Box[Utils.NO_OF_BALLS];
 
 		Random r = new Random(System.currentTimeMillis());
 
@@ -59,7 +75,7 @@ public class JFXwithJBox2d extends Application {
 		 * Random locations between 5 to 95 on x axis and between 100 to 500 on y axis 
 		 */
 		for(int i=0;i<Utils.NO_OF_BALLS;i++) {
-			ball[i]=new Ball(r.nextInt(90)+5,r.nextInt(400)+100);
+			ball[i]=new Box(r.nextInt(90)+5,r.nextInt(400)+100);
 			physicsObjects.add(ball[i]);
 		}
 
@@ -75,6 +91,12 @@ public class JFXwithJBox2d extends Application {
 		timeline.setCycleCount(Timeline.INDEFINITE);
 
 		Duration duration = Duration.seconds(1.0/60.0); // Set duration for frame.
+		
+//		final SpriteClass spriteClass = new SpriteClass();
+//		spriteClass.putImageStrip("horse", "http://upload.wikimedia.org/wikipedia/commons/7/73/The_Horse_in_Motion.jpg", 4, 10, 18, 25, 374, 243, 0.5f);
+//		final Sprite sprite = spriteClass.new Sprite();
+//		sprite.setImageStrip("horse", true, true);
+//		root.getChildren().add(sprite.imageView);
 
 		//UPDATE event
 		//Create an ActionEvent, on trigger it executes a world time step and moves the balls to new position 
@@ -84,6 +106,7 @@ public class JFXwithJBox2d extends Application {
 				float timePassed = (float)(newtime - time)/1000000000;
 				time = newtime;
 				timeStep(timePassed);
+//				sprite.update(timePassed);
 			}
 		};
 
@@ -142,6 +165,10 @@ public class JFXwithJBox2d extends Application {
 					Utils.cameraX+=10;
 				}else if(me.getCode() == KeyCode.D){
 					Utils.cameraX-=10;
+				}else if(me.getCode()==KeyCode.S){
+					Utils.cameraY-=10;
+				}else if(me.getCode()==KeyCode.W){
+					Utils.cameraY+=10;
 				}
 
 			}
@@ -150,7 +177,21 @@ public class JFXwithJBox2d extends Application {
 
 		scene.setOnKeyPressed(keyboardEvent);
 		scene.setOnMouseDragged(addHurdle);
-
+		
+//        final ImageView imageView = new ImageView(/*IMAGE*/);
+//        imageView.setViewport(new Rectangle2D(OFFSET_X, OFFSET_Y, WIDTH, HEIGHT));
+//        
+//        final Animation animation = new SpriteAnimation(
+//                imageView,
+//                Duration.millis(1000),
+//                COUNT, COLUMNS,
+//                OFFSET_X, OFFSET_Y,
+//                WIDTH, HEIGHT
+//        );
+//        animation.setCycleCount(Animation.INDEFINITE);
+//        animation.play();
+//        root.getChildren().add(imageView);
+		
 		primaryStage.setScene(scene);
 		primaryStage.show();
 	}
@@ -166,6 +207,9 @@ public class JFXwithJBox2d extends Application {
 			Body body = (Body)physicsObject.getNode().getUserData();
 			float xpos = Utils.toPixelPosX(body.getPosition().x);
 			float ypos = Utils.toPixelPosY(body.getPosition().y);
+			float angle = body.getAngle();
+			body.setAngularVelocity(0.f);
+			physicsObject.getNode().setRotate(180/Math.PI*angle);
 			physicsObject.getNode().setLayoutX(xpos);
 			physicsObject.getNode().setLayoutY(ypos);
 		}

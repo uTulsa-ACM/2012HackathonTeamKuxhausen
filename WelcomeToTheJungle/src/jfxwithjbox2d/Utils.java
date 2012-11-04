@@ -34,7 +34,7 @@ public class Utils {
     public static final int BALL_SIZE = 8;
     
     //Total number of balls
-    public final static int NO_OF_BALLS = 400; 
+    public final static int NO_OF_BALLS = 1; 
     
     //Ball gradient
     private final static LinearGradient BALL_GRADIENT = new LinearGradient(0.0, 0.0, 1.0, 0.0, true, CycleMethod.NO_CYCLE, new Stop[] { new Stop(0, Color.WHITE), new Stop(1, Color.RED)});
