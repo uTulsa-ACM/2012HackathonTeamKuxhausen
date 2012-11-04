@@ -11,13 +11,20 @@ public class Level {
 	
 	public ArrayList<PhysicsObject> levelOne(){
 		ArrayList<PhysicsObject> list = new ArrayList<PhysicsObject>();
-		list.add(new Box(-20f,0f,100f,1f,0, BodyType.STATIC, Color.DARKGREEN));
-		
-		//list.add(new Box(-100f,0f,80f,1f,0, BodyType.STATIC, Color.DARKGREEN));
-		//list.add(new Box(-100f,0f,1f,100f,0, BodyType.STATIC, Color.GRAY));
-		//list.add(new Box(200f,0f,1f,100f,0, BodyType.STATIC, Color.GRAY));
 		
 		
+		list.add(new Box(-50f,0f,200f,1f,0, BodyType.STATIC, Color.DARKGREEN));
+		list.add(new Box(200f,0f,30f,1f,.85f, BodyType.STATIC, Color.DARKGREEN));
+		list.add(new Box(220f,-20f,30f,1f,.85f, BodyType.STATIC, Color.DARKGREEN));
+		list.add(new Box(240f,0f,10f,1f,0, BodyType.STATIC, Color.DARKGREEN));
+		
+ 		
+
+		list.add(new Box(-50f,0f,1f,200f,0, BodyType.STATIC, Color.DARKGRAY));
+		list.add(new Box(250f,0f,1f,200f,0, BodyType.STATIC, Color.DARKGRAY));
+ 		
+		//list.add(new TreeSegment())
+		//new TreeSegment(40f, (float)Math.random()*.2f, height,0);
 		randomLandscape(10, 20f);
 		
 		return list;

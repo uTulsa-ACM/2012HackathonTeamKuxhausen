@@ -11,7 +11,7 @@ import com.sun.javafx.geom.Vec2f;
 public class Flame extends Ball {
 
 	boolean onFire=true;
-	int health=200;
+	int health=100;
 	
 	public Flame(float posX, float posY, float radius) {
 		
@@ -19,7 +19,7 @@ public class Flame extends Ball {
 		
 		JFXwithJBox2d.physicsObjects.add(this);
 		SpriteClass spriteClass = new SpriteClass();
-		spriteClass.putImageStrip("flame", "./flamestrip.png", 6, 4f);
+		spriteClass.putImageStrip("flame", "./flamestrip.png", 6, 2f);
 		final Sprite sprite = spriteClass.new Sprite(40, 40);
 		JFXwithJBox2d.updatees.add(sprite);
 		this.setNode(sprite.imageView);
