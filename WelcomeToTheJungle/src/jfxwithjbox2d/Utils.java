@@ -32,6 +32,8 @@ public class Utils {
     //Camera offset in physics space
     public static float cameraX = 0;
     public static float cameraY =0;
+
+	public static long lastLandscapeTime = System.nanoTime();
     private static final float cameraVelocity = 0;
     
     //Ball radius in pixel

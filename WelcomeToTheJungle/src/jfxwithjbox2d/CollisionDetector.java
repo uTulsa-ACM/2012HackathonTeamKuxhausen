@@ -25,6 +25,10 @@ public class CollisionDetector implements ContactListener {
 			segment.onFire = true;
 			segment.health-=50;
 		}
+		
+		if(po1 == Utils.player && po2 instanceof Box || po2 == Utils.player && po1 instanceof Box) {
+			Utils.lastLandscapeTime = System.nanoTime();
+		}
 	}
 
 	@Override

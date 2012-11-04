@@ -211,8 +211,9 @@ public class JFXwithJBox2d extends Application {
 							Utils.player.getBody().applyLinearImpulse(new Vec2(-.5f,0), Utils.player.getBody().getPosition());//(Utils.player.getBody().getLinearVelocity().add(new Vec2(-1f,0)));
 						}else if(me.getCode() == KeyCode.D){
 							Utils.player.getBody().applyLinearImpulse(new Vec2(.5f,0), Utils.player.getBody().getPosition());//setLinearVelocity(Utils.player.getBody().getLinearVelocity().add(new Vec2(1f,0)));//.applyForce(new Vec2(1000,0), Utils.player.getBody().getPosition());
-						}else if(me.getCode() == KeyCode.SPACE || me.getCode()== KeyCode.W){
-							Utils.player.getBody().setLinearVelocity(Utils.player.getBody().getLinearVelocity().add(new Vec2(0,1f)));//.applyForce(new Vec2(0,100), Utils.player.getBody().getPosition());
+						}else if((me.getCode() == KeyCode.SPACE || me.getCode()== KeyCode.W) && (float)(time-Utils.lastLandscapeTime)/1000000000 < 0.1f){
+							Utils.player.getBody().setLinearVelocity(Utils.player.getBody().getLinearVelocity().add(new Vec2(0,5f)));//.applyForce(new Vec2(0,100), Utils.player.getBody().getPosition());
+							Utils.lastLandscapeTime -= 1000000000;
 						}
 
 					}
