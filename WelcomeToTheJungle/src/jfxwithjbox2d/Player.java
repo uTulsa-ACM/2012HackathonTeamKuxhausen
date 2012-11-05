@@ -63,7 +63,7 @@ public class Player extends PhysicsObject {
         fd.shape = cs;
         fd.density = 0.9f;
         fd.friction = 0.3f;        
-        fd.restitution = 0.6f;
+        fd.restitution = 0;
 
         /*
         * Virtual invisible JBox2D body of ball. Bodies have velocity and position. 
