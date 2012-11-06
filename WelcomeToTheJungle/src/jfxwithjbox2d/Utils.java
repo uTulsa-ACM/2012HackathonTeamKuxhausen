@@ -91,7 +91,7 @@ public class Utils {
 
     //Convert a JavaFX pixel x coordinate to a JBox2D x coordinate
     public static float toPosX(float posX) {
-        float x =  (cameraX + posX)/physicsToGraphicsFactor;
+        float x =  posX/physicsToGraphicsFactor + cameraX;
         return x;
     }
     

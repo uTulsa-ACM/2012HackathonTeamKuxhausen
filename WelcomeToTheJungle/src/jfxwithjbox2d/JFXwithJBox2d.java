@@ -363,8 +363,8 @@ public class JFXwithJBox2d extends Application {
 		}
 		
 		if(flamethrowing && !Utils.player.dead) {
-			float dx = Utils.toPosX(dragX)+Utils.cameraX- Utils.player.getBody().getPosition().x;
-			float dy = Utils.toPosY(dragY)+Utils.cameraY - Utils.player.getBody().getPosition().y;
+			float dx = Utils.toPosX(dragX) - Utils.player.getBody().getPosition().x;
+			float dy = Utils.toPosY(dragY) - Utils.player.getBody().getPosition().y;
 			Vec2 impulse = new Vec2(dx, dy);
 			impulse.normalize();
 			Vec2 spawnOffset = impulse.mul(.4f);
