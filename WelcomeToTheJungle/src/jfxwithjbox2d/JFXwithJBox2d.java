@@ -62,6 +62,9 @@ public class JFXwithJBox2d extends Application {
 	
 	static FlameAudioTest flameAudio = new FlameAudioTest();
 	protected boolean flamethrowing = false;
+	protected float flameProgress = 0.f;
+	protected float flamePeriod = 0.01f;
+	Random generator = new Random();
 	
 	long time = System.nanoTime();
 	protected float dragX;
@@ -363,30 +366,29 @@ public class JFXwithJBox2d extends Application {
 		}
 		
 		if(flamethrowing && !Utils.player.dead) {
-			float dx = Utils.toPosX(dragX) - Utils.player.getBody().getPosition().x;
-			float dy = Utils.toPosY(dragY) - Utils.player.getBody().getPosition().y;
-			Vec2 impulse = new Vec2(dx, dy);
-			impulse.normalize();
-			Vec2 spawnOffset = impulse.mul(.4f);
-			impulse.mulLocal(.1f);
-
-			//hurdle.getBody().getPosition();
-
-			//Draw ball on this location. Set balls body type to static.
-			//Ball hurdle = new Ball(Utils.toPosX(dragX), Utils.toPosY(dragY),.02f,BodyType.DYNAMIC,Color.BLUE);
-			//TreeSegment hurdle = new TreeSegment(Utils.toPosX(dragX), Utils.toPosY(dragY),.2f,.4f , 1f);
-			//Flame hurdle = new Flame(Utils.player.getBody().getPosition().x, Utils.player.getBody().getPosition().y, .1f);
-			//hurdle.getBody().applyLinearImpulse(impulse, hurdle.getBody().getPosition());
-			
-			Vec2 adjustedSpawnPosition= Utils.player.getBody().getPosition().add(spawnOffset);
-			Flame hurdle = new Flame(adjustedSpawnPosition.x,adjustedSpawnPosition.y, .1f);
-			hurdle.getBody().applyLinearImpulse(impulse, adjustedSpawnPosition);
+			flameProgress += timePassed;
+			while(flameProgress >= flamePeriod) {
+				flameProgress -= flamePeriod;
 				
-			
+				float dx = Utils.toPosX(dragX) - Utils.player.getBody().getPosition().x + 0.1f*((float)generator.nextDouble()-0.5f);
+				float dy = Utils.toPosY(dragY) - Utils.player.getBody().getPosition().y + 0.1f*((float)generator.nextDouble()-0.5f);
+				Vec2 impulse = new Vec2(dx, dy);
+				impulse.normalize();
+				Vec2 spawnOffset = impulse.mul(.4f);
+				impulse.mulLocal(.1f);
 				
+				//hurdle.getBody().getPosition();
 				
+				//Draw ball on this location. Set balls body type to static.
+				//Ball hurdle = new Ball(Utils.toPosX(dragX), Utils.toPosY(dragY),.02f,BodyType.DYNAMIC,Color.BLUE);
+				//TreeSegment hurdle = new TreeSegment(Utils.toPosX(dragX), Utils.toPosY(dragY),.2f,.4f , 1f);
+				//Flame hurdle = new Flame(Utils.player.getBody().getPosition().x, Utils.player.getBody().getPosition().y, .1f);
+				//hurdle.getBody().applyLinearImpulse(impulse, hurdle.getBody().getPosition());
 				
-		
+				Vec2 adjustedSpawnPosition= Utils.player.getBody().getPosition().add(spawnOffset);
+				Flame hurdle = new Flame(adjustedSpawnPosition.x,adjustedSpawnPosition.y, .1f);
+				hurdle.getBody().applyLinearImpulse(impulse, adjustedSpawnPosition);
+			}
 		}
 
 	}
